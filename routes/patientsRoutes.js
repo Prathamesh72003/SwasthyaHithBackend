@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const patients = require('../models/patientSchema');
+const feedbacks = require('../models/feedbackSchema');
 
 // 1
 // ***********************************************************************
@@ -83,6 +84,28 @@ router.patch('/:phone/addReports', async (req, res) => {
     }
   });
   // ***********************************************************************
+
+// 5
+// ***********************************************************************
+//API TO PUSH THE FEEDBACK TO THE DATABASE
+router.post('/', (req, res) => {
+
+    const FeedBack = new feedbacks({
+        name: req.body.name,
+        email: req.body.email,
+        subject: req.body.subject,
+        message: req.body.message
+    });
+
+    try {
+        
+        const addFeedback = FeedBack.save();
+        res.status(201).json(addFeedback);
+    } catch (error) {
+        res.status(400).json({message: error.message});
+    }
+})
+// ***********************************************************************
   
   
 
